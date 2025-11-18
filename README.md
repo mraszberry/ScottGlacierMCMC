@@ -3,6 +3,8 @@ Part of a larger project to map subglacial topography to quantify the uncertaint
 
 ![Figure showing the progression of subglacial topography from bedmachine, sgs, and both MCMC chains](Figures/BedCompilation.png)
 
+![Figure showing the variograms for each step of the process and the conditioning bed](Figures/BigVariogram.png)
+
 The bed topography beneath glaciers and near their grounding line (not pictured), can greatly affect their flow and retreat dynamics. As such, we need to determine just how variable these sub-glacial topographies can be in order to predict the impact of glacial melting on sea level rise based on a variety of climate projections.
 
 # Methods
@@ -10,4 +12,7 @@ We use Tutorial 1 (No tutorials present yet) to isolate our study area from bedm
 
 # Poster
 
-![Placeholder image of a pretty penguin]
+![Placeholder image of a poor poster](Figures/PosterDraft.png)
+
+# Target Audience
+![pretty penguin](Figures/images.jpg)
