@@ -6,27 +6,53 @@ A part of GatorGlaciology's larger project DEMOGORGN to map subglacial topograph
 
 ![Figure showing the progression of subglacial topography from bedmachine, sgs, and both MCMC chains](Figures/BedCompilation.png)
 
-### Scott Glacier
+### Scott Glacier Details
 Scott Glacier is roughly 190 km long, part of West Antarctica, and runs north to south feeding into the northern Ross Ice Shelf (Alberts, 1995). It is surrounded by and flows through the Transantarctic Mountains. The following figure shows its location relative to the Antarctic continent.
 
 <img src="https://github.com/mraszberry/ScottGlacierMCMC/blob/main/Figures/GlacierZoneNoBoundary.png" width="400">
 
-### Methodology
-(Methods informed by Shao, et. al., n.d.)
-* `T1_LoadData.ipynb` isolates our study area from bedmap3, a database for Antarctic topographical data, by converting geographic coordinates to polar stereographic and establishing a region of high velocity.
-* `T2_StatisticalAnalysis.ipynb` creates an SGS realization of the subglacial topography based on a matern variogram of our normalized bed. 
-* `T3_LargeScaleChain.ipynb` uses this SGS bed to run many large-scale MCMC iterations constrained to physical and topographical criteria to produce many realizations with decreasing loss. One such physical constraint is mass conservation, which pushes the simulation to have a total mass loss and mass gain equal to a known value. The topographical constraints require areas with radar measurements or above-ground regions to match the data.
-* `T4_SmallScaleChain.ipynb` continues with the small-scale MCMC, keeping the afformentioned constraints and iteratively changing small portions of the previous step using SGS to further minimize loss.
+## MCMC and Tutorial Methodology
 
+The graphic below demonstrates the MCMC process (Milad, et. al., 2021). The first dot is the original, unchanged bed data. Each arrow, the length of which is known as step size, represents the perturbation from one bed realization to the next realization (or dot in this case). These new points must be in some acceptable range of values or they are rejected (the dashed dots and arrows). In this case, the loss is what determines if a realization is acceptable, where lower is better. While not depicted, over time these realizations (dots and arrows) should converge to a smaller range of more acceptable points when the loss stops decreasing with new realizations. Realizations within this small range are found in the large and small scale chains of T3 and T4 respectively.
 
 ![Diagram visualizing the MCMC process (Milad, et. al., 2021)](Figures/MCMCgraphic.png)
 
-This graphic demonstrates the MCMC process (Milad, et. al., 2021). The first dot is the original, unchanged bed data. Each arrow, the length of which is known as step size, represents the perturbation from one bed realization to the next realization (or dot in this case). These new points must be in some acceptable range of values or they are rejected (the dashed dots and arrows). In this case, the loss is what determines if a realization is acceptable, where lower is better. While not depicted, over time these realizations (dots and arrows) should converge to a smaller range of more acceptable points when the loss stops decreasing with new realizations. Realizations within this small range are found in the large and small scale chains of T3 and T4 respectively.
+### Tutorials
+
+The following section details the significance of each tutorial:
+
+* `T1_LoadData.ipynb` isolates our study area from bedmap3, a database for Antarctic topographical data, by converting geographic coordinates to polar stereographic and establishing a region of high velocity.
+* `T2_StatisticalAnalysis.ipynb` creates an SGS realization of the subglacial topography based on a matern variogram of our normalized bed. 
+* `T3_LargeScaleChain.ipynb` uses this SGS bed to run many large-scale MCMC iterations constrained to physical and topographical criteria to produce many realizations with decreasing loss. One such physical constraint is mass conservation, which pushes the simulation to have a total mass loss and mass gain equal to a known value of mass change. The topographical constraints require areas with radar measurements or above-ground regions to match the data.
+* `T4_SmallScaleChain.ipynb` continues with the small-scale MCMC, keeping the afformentioned constraints and iteratively changing small portions of the large scale bed using SGS to further minimize loss.
+
+(Informed by Shao, et. al., n.d.)
 
 ## Use
+
+### Establishing an Environment
+
+This project was entirely done in Jupyter Lab and it is recommended that it is repeated in the same manner. To do so, install miniforge (https://github.com/conda-forge/miniforge?tab=readme-ov-file) and use the gstatsMCMC.yml file to create an environment by navigating to said file's directory and typing into the miniforge prompt (the installed application, can be found in the search bar):
+
+`conda env create -f gstatsMCMC.yml`
+
+Afterwards and on any repeat launches of Jupyter Lab, type the following lines sequentially into the console:
+
+`conda activate gstatsMCMC`
+
+`jupyter lab`
+
+Using the .yml environment ensures all required packages and dependencies are already installed. Any additional packages can be added to the .yml file and will be installed upon creating another environment.
+
+### Running the Code
+
+Install the code and data (listed below) and open the tutorials in the conda environment.
+
 Install the code and bedmap3.nc data file if target glacier is different, ScottGlacierGriddedFinal.csv if not. Run tutorials 1-4, changing variables as necessary. Adjust coordinates in T1 and velocity threshhold if needed. Adjust resolution and variogram radius as needed in T2 (keep these the same for future tutorials). Adjust sigma3 for best bell-curve shape, the range max to match coordinates, and block x and y for for T3. Adjust block sizes again (they should be smaller) for T4. In T3 and T4, change iterations and count and run until a loss is reached that matches bemachine (dotted red line).
 
-## Data
+## References
+
+### Data
 * **BedMachine Antarctica V3:** Morlighem, M. (2022). MEaSUREs BedMachine Antarctica. (NSIDC-0756, Version 3). [Data Set]. Boulder, Colorado USA. NASA National Snow and Ice Data Center Distributed Active Archive Center. https://doi.org/10.5067/FPSU0V1MWUB6
 * **BedMap V3:** Fretwell, P., Pritchard, H., Fremand, A., Bodart, J., Aitken, A., Bamber, J., Bell, R., Bianchi, C., Bingham, R., Blankenship, D., Casassa, G., Catania, G., Christianson, K., Conway, H., Corr, H., Cui, X., Damaske, D., Damn, V., Drews, R., ... Zirizzotti, A. (2022). BEDMAP3 - Ice thickness, bed and surface elevation for Antarctica - standardised shapefiles and geopackages (Version 1.0) [Data set]. NERC EDS UK Polar Data Centre. https://doi.org/10.5285/a72a50c6-a829-4e12-9f9a-5a683a1acc4a
 * **InSAR-Based Antarctica Ice Velocity Map V2:** Rignot, E., Mouginot, J. & Scheuchl, B. (2017). MEaSUREs InSAR-Based Antarctica Ice Velocity Map. (NSIDC-0484, Version 2). [Data Set]. Boulder, Colorado USA. NASA National Snow and Ice Data Center Distributed Active Archive Center. https://doi.org/10.5067/D7GK8F5J8M8R
@@ -36,7 +62,7 @@ Install the code and bedmap3.nc data file if target glacier is different, ScottG
 *  **Antarctic Grounded Ice Sheet Elevation Change V1:** Nilsson, J., Gardner, A. S. & Paolo, F. (2023). MEaSUREs ITS_LIVE Antarctic Grounded Ice Sheet Elevation Change. (NSIDC-0782, Version 1). [Data Set]. Boulder, Colorado USA. NASA National Snow and Ice Data Center Distributed Active Archive Center. https://doi.org/10.5067/L3LSVDZS15ZV
 * **Surface Mass Balance:** van Wessem, J. M., van de Berg, W. J., Noël, B. P., van Meijgaard, E., Amory, C., Birnbaum, G., Jakobs, C. L., Krüger, K., Lenaerts, J. T., Lhermitte, S., Ligtenberg, S. R., Medley, B., Reijmer, C. H., van Tricht, K., Trusel, L. D., van Ulft, L. H., Wouters, B., Wuite, J., & van den Broeke, M. R. (2018). Modelling the climate and surface mass balance of polar ice sheets using racmo2 – part 2: Antarctica (1979–2016). The Cryosphere, 12(4), 1479–1498. https://doi.org/10.5194/tc-12-1479-2018
 
-## Software and Packages
+### Software and Packages
 * **Conda-Forge (Miniforge):** conda-forge community. (2015). The conda-forge Project: Community-based Software Distribution Built on the conda Package Format and Ecosystem. Zenodo. https://doi.org/10.5281/zenodo.4774217
 
   The following packages are all present within the .yml file and should be automatically downloaded when a conda environment uses said .yml file. However, they can be downloaded on their own.
@@ -49,7 +75,7 @@ Install the code and bedmap3.nc data file if target glacier is different, ScottG
 * **skgstat:** Mälicke, M.: SciKit-GStat 1.0: a SciPy-flavored geostatistical variogram estimation toolbox written in Python, Geosci. Model Dev., 15, 2505–2532, https://doi.org/10.5194/gmd-15-2505-2022, 2022.
 * **tqdm:** da Costa-Luis, (2019). tqdm: A Fast, Extensible Progress Meter for Python and CLI. Journal of Open Source Software, 4(37), 1277, https://doi.org/10.21105/joss.01277
 
-## References
+### Article Citations
 * Alberts, F. (2 Ed.). (1995). Geographic names of the Antarctic (Report Nos. 95–157; 2nd ed., Report, p. 864). USGS Publications Warehouse. https://pubs.usgs.gov/publication/70039167
 * Milad, Abdalrhman & Adwan, Ibrahim & Majeed, Sayf & Memon, Zubair & Bilema, Munder & Omar, Hend & Abdolrasol, Maher & Usman, Aliyu & Md Yusoff, Nur Izzi. (2021). Development of a Hybrid Machine Learning Model for Asphalt Pavement Temperature Prediction. IEEE Access. PP. 1-1. 10.1109/ACCESS.2021.3129979.
 * Shao, N., MacKie, E., Field, M., & McCormack, F. (n.d.). A Markov chain Monte Carlo approach for geostatistically simulating mass-conserving subglacial topography. Journal of Glaciology. https://doi.org/10.31223/x5sb2r
@@ -58,5 +84,5 @@ Install the code and bedmap3.nc data file if target glacier is different, ScottG
 First poster draft. Comments on structure and color scheme welcome.
 ![Placeholder image of a poor poster](Figures/PosterDraft.png)
 
-## Target Audience
+### Target Audience
 ![pretty penguin](Figures/images.jpg)
