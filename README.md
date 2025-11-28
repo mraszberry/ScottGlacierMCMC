@@ -2,7 +2,7 @@
 Authors: Milo Rasz, Dr. Emma MacKie, Niya Shao
 
 ## Overview
-A part of GatorGlaciology's larger project DEMOGORGN to map subglacial topography to quantify the uncertainty in sea level rise predictions. The bed topography beneath glaciers and near their grounding line can greatly affect their flow and retreat dynamics. As such, we need to determine just how variable these sub-glacial topographies can be in order to predict the impact of glacial melting on sea level rise based on a variety of climate projections. Data from ice-penetrating radar is limited, so estimations and interpolations of the underlying glacial bed must be made. Large databases of these interpolations exist and are the foundational data sets of this project. However, many of these data sets lack physical constraints such as ice flux divergence and thus can be improved. This is what this project seeks to accomplish using iterative Sequential Gaussian Simulation (SGS) and Markov Chain Monte Carlo (MCMC) to produce variations of antarctic bed database Bedmap3 that follow specific physical constraints that will produce bed realizations more closely resembling real antarctic beds in roughness. The following figure shows the progress of bed realizations throughout the project.
+A part of GatorGlaciology's larger project DEMOGORGN to map subglacial topography to quantify the uncertainty in sea level rise predictions. The bed topography beneath glaciers and near their grounding line can greatly affect their flow and retreat dynamics. As such, we need to determine just how variable these sub-glacial topographies can be in order to predict the impact of glacial melting on sea level rise based on a variety of climate projections. Data from ice-penetrating radar is limited, so estimations and interpolations of the underlying glacial bed must be made. Large databases of these interpolations exist and are the foundational data sets of this project. However, many of these data sets lack physical constraints such as ice flux divergence and thus can be improved. This is what this project seeks to accomplish using iterative Sequential Gaussian Simulation (SGS) and Markov Chain Monte Carlo (MCMC) to produce variations of antarctic bed database Bedmap3 that follow specific physical constraints that will produce bed realizations more closely resembling real antarctic beds in roughness. The following figure shows the progress of bed realizations and the product of tutorials one through four respectively. The inputs of each tutorial are the outputs of the previous or the data for the first.
 
 ![Figure showing the progression of subglacial topography from bedmachine, sgs, and both MCMC chains](Figures/BedCompilation.png)
 
@@ -17,6 +17,8 @@ The graphic below demonstrates the MCMC process (Milad, et. al., 2021). The firs
 
 ![Diagram visualizing the MCMC process (Milad, et. al., 2021)](Figures/MCMCgraphic.png)
 
+(Methods informed by Shao, et. al., n.d.)
+
 ### Tutorials
 
 The following section details the significance of each tutorial:
@@ -26,7 +28,10 @@ The following section details the significance of each tutorial:
 * `T3_LargeScaleChain.ipynb` uses this SGS bed to run many large-scale MCMC iterations constrained to physical and topographical criteria to produce many realizations with decreasing loss. One such physical constraint is mass conservation, which pushes the simulation to have a total mass loss and mass gain equal to a known value of mass change. The topographical constraints require areas with radar measurements or above-ground regions to match the data.
 * `T4_SmallScaleChain.ipynb` continues with the small-scale MCMC, keeping the afformentioned constraints and iteratively changing small portions of the large scale bed using SGS to further minimize loss.
 
-(Informed by Shao, et. al., n.d.)
+![Radar thickness](Figures/RadarDataVisualized.png)
+
+The radar data above is used in different ways in multiple tutorials. In T2, it can be used to determine rad or range based on how far any given point is from a radar line, is part of the conditioning bed alongside ice shelf and above-ground topography, and helps to inform the SGS realization. This conditioning bed is used in T3 and T4 as the MCMC conditioning variogram and kept constant (and equal to the data) as a topographical constraint in bed realizations, which is not done in Bedmachine or Bedmap. There are many other instances of data being used repeatedly and in different contexts throughout the process.
+
 
 ## Use
 
@@ -46,7 +51,7 @@ Using the .yml environment ensures all required packages and dependencies are al
 
 ### Running the Code
 
-Install the code and data (listed below) and open the tutorials in the conda environment. Run tutorials 1-4, details for which are included within the comments and markdown lanugage. Certain variables will need to be change depending on the study area. The following are variables that must be changed or should be at least tested to determine if they remain appropriate.
+Install the tutorials and `gstatsMCMC` python files in the `Code` folder and all data (listed below) before opening the tutorials in the conda environment. Run tutorials 1-4, details for which are included within the comments and markdown lanugage. Certain variables will need to be change depending on the study area. The following are variables that must be changed or should be at least tested to determine if they remain appropriate.
 
 * In T1, adjust resoltion (keep the same for all tutorials), coordinates (xmin, xmax, ymin, ymax), high velocity mask, and velocity threshhold if needed.
 * In T2, adjust variogram radius as needed in T2 (keep the same for all tutorials).
@@ -57,7 +62,19 @@ In T3 and T4, change iterations and count and run until a loss is reached that m
 
 ![Loss graph for entire MCMC process](Figures/MCMClosses.png)
 
+Certain graphics and visalizations are completed in the `Visualization.ipynb` file, but it is not necessary for completing the workflow. All graphics can be found within the `Figures` folder.
+
 **Note:** code for detrending is present in T4, but does not yet work. The code will function without it and will be updated to include this change. Detrending removes topographical trends from data sets to better calculate their semivariance.
+
+### Cloning the Repository
+
+Should you wish to clone this repository, take the following steps:
+* Ensure GitBash is installed
+* On the front page of the repository click `Code` and clone using the web url
+* Open GitBash and go to the directory where the clone will go
+* Type `git clone` followed by the web url and press enter
+
+These instructions are from the following resource which should be consulted if this brief overview is not sufficient (https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository).
 
 ## References
 
@@ -90,8 +107,9 @@ In T3 and T4, change iterations and count and run until a loss is reached that m
 * Shao, N., MacKie, E., Field, M., & McCormack, F. (n.d.). A Markov chain Monte Carlo approach for geostatistically simulating mass-conserving subglacial topography. Journal of Glaciology. https://doi.org/10.31223/x5sb2r
 
 ## Poster
-First poster draft. Comments on structure and color scheme welcome.
+First poster draft. Will be changed to reflect finalized poster.
 ![Placeholder image of a poor poster](Figures/PosterDraft.png)
 
-### Target Audience
-![pretty penguin](Figures/images.jpg)
+### Gator Glaciology Logo
+
+![Logo](Figures/GatorGlaciologyLogo.jpg)
