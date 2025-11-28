@@ -46,9 +46,18 @@ Using the .yml environment ensures all required packages and dependencies are al
 
 ### Running the Code
 
-Install the code and data (listed below) and open the tutorials in the conda environment.
+Install the code and data (listed below) and open the tutorials in the conda environment. Run tutorials 1-4, details for which are included within the comments and markdown lanugage. Certain variables will need to be change depending on the study area. The following are variables that must be changed or should be at least tested to determine if they remain appropriate.
 
-Install the code and bedmap3.nc data file if target glacier is different, ScottGlacierGriddedFinal.csv if not. Run tutorials 1-4, changing variables as necessary. Adjust coordinates in T1 and velocity threshhold if needed. Adjust resolution and variogram radius as needed in T2 (keep these the same for future tutorials). Adjust sigma3 for best bell-curve shape, the range max to match coordinates, and block x and y for for T3. Adjust block sizes again (they should be smaller) for T4. In T3 and T4, change iterations and count and run until a loss is reached that matches bemachine (dotted red line).
+* In T1, adjust resoltion (keep the same for all tutorials), coordinates (xmin, xmax, ymin, ymax), high velocity mask, and velocity threshhold if needed.
+* In T2, adjust variogram radius as needed in T2 (keep the same for all tutorials).
+* In T3, adjust maxlag, sigma3, the range_max and range_min, block x and y.
+* In T4, adjust block sizes again.
+
+In T3 and T4, change iterations and count and run until a loss is reached that matches bemachine. The following graph shows the loss function over the large scale chain and six instances of the small scale chain, the data for which can be found in the `MCMC Realizations` folder of `Figures`. The small scale loss is likely not going to plummet directly to bedmachine loss as depicted.
+
+![Loss graph for entire MCMC process](Figures/MCMClosses.png)
+
+**Note:** code for detrending is present in T4, but does not yet work. The code will function without it and will be updated to include this change. Detrending removes topographical trends from data sets to better calculate their semivariance.
 
 ## References
 
