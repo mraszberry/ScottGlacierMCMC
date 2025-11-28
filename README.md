@@ -11,13 +11,17 @@ Scott Glacier is roughly 190 km long, part of West Antarctica, and runs north to
 
 <img src="https://github.com/mraszberry/ScottGlacierMCMC/blob/main/Figures/GlacierZoneNoBoundary.png" width="400">
 
-### Methods
-* `T1_LoadData.ipynb` isolates our study area from bedmap3, a database for Antarctic topographical data, by converting geographic coordinates to polar stereographic and establish a region of high velocity for future operations.
+### Methodology
+(Methods informed by Shao, et. al., n.d.)
+* `T1_LoadData.ipynb` isolates our study area from bedmap3, a database for Antarctic topographical data, by converting geographic coordinates to polar stereographic and establishing a region of high velocity.
 * `T2_StatisticalAnalysis.ipynb` creates an SGS realization of the subglacial topography based on a matern variogram of our normalized bed. 
-* `T3_LargeScaleChain.ipynb` uses this SGS bed to run many large-scale MCMC iterations constrained to certain physical and topographical constraints in order to produce many realizations with decreasing loss. One such physical constraint is mass conservation, which pushes the simulation to have a total mass loss and mass gain equal to a known value. The topographical constraints require areas with radar measurements or above-ground regions to match the data.
+* `T3_LargeScaleChain.ipynb` uses this SGS bed to run many large-scale MCMC iterations constrained to physical and topographical criteria to produce many realizations with decreasing loss. One such physical constraint is mass conservation, which pushes the simulation to have a total mass loss and mass gain equal to a known value. The topographical constraints require areas with radar measurements or above-ground regions to match the data.
 * `T4_SmallScaleChain.ipynb` continues with the small-scale MCMC, keeping the afformentioned constraints and iteratively changing small portions of the previous step using SGS to further minimize loss.
 
 
+![Diagram visualizing the MCMC process (Milad, et. al., 2021)](Figures/MCMCgraphic.png)
+
+This graphic demonstrates the MCMC process (Milad, et. al., 2021). The first dot is the original, unchanged bed data. Each arrow, the length of which is known as step size, represents the perturbation from one bed realization to the next realization (or dot in this case). These new points must be in some acceptable range of values or they are rejected (the dashed dots and arrows). In this case, the loss is what determines if a realization is acceptable, where lower is better. While not depicted, over time these realizations (dots and arrows) should converge to a smaller range of more acceptable points when the loss stops decreasing with new realizations. Realizations within this small range are found in the large and small scale chains of T3 and T4 respectively.
 
 ## Use
 Install the code and bedmap3.nc data file if target glacier is different, ScottGlacierGriddedFinal.csv if not. Run tutorials 1-4, changing variables as necessary. Adjust coordinates in T1 and velocity threshhold if needed. Adjust resolution and variogram radius as needed in T2 (keep these the same for future tutorials). Adjust sigma3 for best bell-curve shape, the range max to match coordinates, and block x and y for for T3. Adjust block sizes again (they should be smaller) for T4. In T3 and T4, change iterations and count and run until a loss is reached that matches bemachine (dotted red line).
@@ -28,7 +32,7 @@ Install the code and bedmap3.nc data file if target glacier is different, ScottG
 * **InSAR-Based Antarctica Ice Velocity Map V2:** Rignot, E., Mouginot, J. & Scheuchl, B. (2017). MEaSUREs InSAR-Based Antarctica Ice Velocity Map. (NSIDC-0484, Version 2). [Data Set]. Boulder, Colorado USA. NASA National Snow and Ice Data Center Distributed Active Archive Center. https://doi.org/10.5067/D7GK8F5J8M8R
 * **MOA 2014 Image Map V1:** Haran, T., Klinger, M., Bohlander, J., Fahnestock, M., Painter, T. & Scambos, T. (2018). MEaSUREs MODIS Mosaic of Antarctica 2013-2014 (MOA2014) Image Map. (NSIDC-0730, Version 1). [Data Set]. Boulder, Colorado USA. NASA National Snow and Ice Data Center Distributed Active Archive Center. https://doi.org/10.5067/RNF17BP824UM
 
-   (Due to issues with the study region, this dataset is not used within the tutorials but can be used to establish a glacier's grounding line) 
+   (This dataset is not used within the tutorials but can be used to establish a glacier's grounding line. Due to issues with the study region, a consistent grouning line is not established.) 
 *  **Antarctic Grounded Ice Sheet Elevation Change V1:** Nilsson, J., Gardner, A. S. & Paolo, F. (2023). MEaSUREs ITS_LIVE Antarctic Grounded Ice Sheet Elevation Change. (NSIDC-0782, Version 1). [Data Set]. Boulder, Colorado USA. NASA National Snow and Ice Data Center Distributed Active Archive Center. https://doi.org/10.5067/L3LSVDZS15ZV
 * **Surface Mass Balance:** van Wessem, J. M., van de Berg, W. J., Noël, B. P., van Meijgaard, E., Amory, C., Birnbaum, G., Jakobs, C. L., Krüger, K., Lenaerts, J. T., Lhermitte, S., Ligtenberg, S. R., Medley, B., Reijmer, C. H., van Tricht, K., Trusel, L. D., van Ulft, L. H., Wouters, B., Wuite, J., & van den Broeke, M. R. (2018). Modelling the climate and surface mass balance of polar ice sheets using racmo2 – part 2: Antarctica (1979–2016). The Cryosphere, 12(4), 1479–1498. https://doi.org/10.5194/tc-12-1479-2018
 
@@ -47,7 +51,8 @@ Install the code and bedmap3.nc data file if target glacier is different, ScottG
 
 ## References
 * Alberts, F. (2 Ed.). (1995). Geographic names of the Antarctic (Report Nos. 95–157; 2nd ed., Report, p. 864). USGS Publications Warehouse. https://pubs.usgs.gov/publication/70039167
-* Shao, N., MacKie, E., Field, M., & McCormack, F. (n.d.). A Markov chain Monte Carlo approach for geostatistically simulating mass-conserving subglacial topography. Journal of Glaciology. https://doi.org/10.31223/x5sb2r 
+* Milad, Abdalrhman & Adwan, Ibrahim & Majeed, Sayf & Memon, Zubair & Bilema, Munder & Omar, Hend & Abdolrasol, Maher & Usman, Aliyu & Md Yusoff, Nur Izzi. (2021). Development of a Hybrid Machine Learning Model for Asphalt Pavement Temperature Prediction. IEEE Access. PP. 1-1. 10.1109/ACCESS.2021.3129979.
+* Shao, N., MacKie, E., Field, M., & McCormack, F. (n.d.). A Markov chain Monte Carlo approach for geostatistically simulating mass-conserving subglacial topography. Journal of Glaciology. https://doi.org/10.31223/x5sb2r
 
 ## Poster
 First poster draft. Comments on structure and color scheme welcome.
